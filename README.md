@@ -11,3 +11,7 @@ Steps:
 - Add your target to two additional variables on config, BSSID and channel number
 - Run jam.sht, for jamming the AP
 - Run deinit.sht, for returning wifi device to 'normal mode'
+
+
+=====
+Inspired by https://www.securitynewspaper.com/2020/11/24/revenge-your-neighbors-by-jamming-any-wifi-in-a-block-3-ways-to-creating-a-wifi-jammer-blocker-without-any-special-hardware/
