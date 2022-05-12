@@ -10,3 +10,4 @@ Steps:
 - Run dump.sht, for scan surrounding wireless AP
 - Add your target to two additional variables on config, BSSID and channel number
 - Run jam.sht, for jamming the AP
+- Run deinit.sht, for returning wifi device to 'normal mode'
