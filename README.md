@@ -1,4 +1,4 @@
 # laughing-chainsaw
 Wifi Jam Scripted tool for ubuntu
 
-Punya tetangga mengganggu? Berisik mabar sampai malam? 
+Punya tetangga mengganggu? Berisik dan mabar sampai malam? 
