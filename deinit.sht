@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source ./config.cfg
+
+echo "Stopping monitor mode on $DEVICE"
+airmon-ng stop $DEVICE
+
+echo "Switch wireless device $DEVICE to managed mode"
+ifconfig $DEVICE down
+iwconfig $DEVICE mode managed
+
+echo "Initiating device $DEVICE to stand by"
+ifconfig $DEVICE up
+
+echo "Enabling wireless device $DEVICE for managed by NetworkManager"
+nmcli dev set $DEVICE managed yes
+
