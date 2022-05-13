@@ -15,5 +15,6 @@ rfkill unblock all
 echo "Initiating device $DEVICE to stand by"
 ifconfig $DEVICE up
 
-airmon-ng start $DEVICE
+# Use iwconfig instead of airmon-ng
+#airmon-ng start $DEVICE
 echo "Started monitor mode on $DEVICE"
