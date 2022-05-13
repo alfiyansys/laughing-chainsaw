@@ -9,6 +9,8 @@ echo "Switch wireless device $DEVICE to managed mode"
 ifconfig $DEVICE down
 iwconfig $DEVICE mode managed
 
+iw dev $MON del
+
 echo "Initiating device $DEVICE to stand by"
 ifconfig $DEVICE up
 

