@@ -2,14 +2,14 @@
 
 source ./config.cfg
 
-echo "Temporary disabling wireless device $DEVICE managed by NetworkManager"
+echo "Temporary disabling wireless device $IFACE managed by NetworkManager"
 nmcli dev set $IFACE managed no
 
-echo "Switch wireless device $DEVICE to monitor mode"
+echo "Switch off wireless device $IFACE to prepare monitoring mode"
 ifconfig $IFACE down
-#iwconfig $DEVICE mode monitor
 
 # Use virtual monitor mode
+echo "Creating virtual monitor $MON from $IFACE"
 iw dev $IFACE interface add $MON type monitor
 
 echo "Set RFKill"
@@ -18,6 +18,4 @@ rfkill unblock all
 echo "Initiating device $DEVICE to stand by"
 ifconfig $IFACE up
 
-# Use iwconfig instead of airmon-ng
-#airmon-ng start $DEVICE
-echo "Started monitor mode on $DEVICE"
+echo "Started monitor mode on $MON"
