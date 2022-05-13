@@ -1,5 +1,5 @@
 
-DEVICE="wlx0022cff5f309"
+IFACE="wlx0022cff5f309"
 MON="mon0"
 
 DEVICE=$MON
