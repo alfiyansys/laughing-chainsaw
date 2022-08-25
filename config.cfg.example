@@ -1,6 +1,7 @@
 
 IFACE="wlx0022cff5f309"
-MON="mon0"
+MONA="mon-atk"
+MOND="mon-dmp"
 
 DEVICE=$MON
 

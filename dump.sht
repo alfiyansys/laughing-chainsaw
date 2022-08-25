@@ -1,4 +1,4 @@
 #!/bin/bash
 source ./config.cfg
 
-airodump-ng $DEVICE
+airodump-ng $MOND

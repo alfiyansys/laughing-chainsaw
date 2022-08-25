@@ -9,8 +9,9 @@ echo "Switch wireless device $DEVICE to managed mode"
 ifconfig $IFACE down
 iwconfig $IFACE mode managed
 
-echo "Deleting monitor $MON device"
-iw $MON del
+echo "Deleting monitor $MONA & $MOND device"
+iw $MONA del
+iw $MOND del
 
 echo "Initiating device $IFACE to stand by"
 ifconfig $IFACE up

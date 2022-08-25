@@ -10,8 +10,9 @@ echo "Switch off wireless device $IFACE to prepare monitoring mode"
 ifconfig $IFACE down
 
 # Use virtual monitor mode
-echo "Creating virtual monitor $MON from $IFACE"
-iw dev $IFACE interface add $MON type monitor
+echo "Creating virtual monitor $MONA and $MOND  from $IFACE"
+iw dev $IFACE interface add $MONA type station
+iw dev $IFACE interface add $MOND type monitor
 
 echo "Set RFKill"
 rfkill unblock all
@@ -19,4 +20,4 @@ rfkill unblock all
 echo "Initiating device $DEVICE to stand by"
 ifconfig $IFACE up
 
-echo "Started monitor mode on $MON"
+echo "Started monitor mode on $MONA and $MOND"
