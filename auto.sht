@@ -2,7 +2,7 @@
 
 source ./config.cfg
 SCAN_TIME=$AUTO_SCAN_TIME
-INJECTION_TIME=$AUTO_SCAN_TIME
+INJECTION_TIME=$AUTO_INJECTION_TIME
 
 echo "Sampling wireless data"
 rm tempdump*
