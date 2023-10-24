@@ -13,4 +13,9 @@ mv tempdump-01.csv tempdump.csv
 echo "Grepping data"
 TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
 
+if [ -z "$TARGET_CHANNEL" ]; then
+  echo "Target channel is not found. Exiting."
+  exit 1
+fi
+
 echo "Target channel = $TARGET_CHANNEL"
