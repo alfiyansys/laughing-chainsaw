@@ -18,4 +18,6 @@ if [ -z "$TARGET_CHANNEL" ]; then
   exit 1
 fi
 
+TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+
 echo "Target channel = $TARGET_CHANNEL"
