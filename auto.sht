@@ -1,8 +1,8 @@
 #!/bin/bash
 
 source ./config.cfg
-SCAN_TIME=5
-INJECTION_TIME=30
+SCAN_TIME=$AUTO_SCAN_TIME
+INJECTION_TIME=$AUTO_SCAN_TIME
 
 echo "Sampling wireless data"
 rm tempdump*
