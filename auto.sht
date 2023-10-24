@@ -7,7 +7,7 @@ INJECTION_TIME=30
 echo "Sampling wireless data"
 rm tempdump*
 airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & pid=$!
-sleep $SCAN_TIMEOUT
+sleep $SCAN_TIME
 kill "$pid"
 
 echo "Preparing data"
