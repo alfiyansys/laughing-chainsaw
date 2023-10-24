@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source ./config.cfg
+
+timeout 15s airodump-ng -w tempdump --output-format csv --write-interval 3 $IFACE
+
+mv tempdump-01.csv tempdump.csv
+
+TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{print $4}')
+
+echo "Target channel = $TARGET_CHANNEL"
