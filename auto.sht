@@ -2,8 +2,10 @@
 
 source ./config.cfg
 
+rm tempdump*
+
 echo "Dumping data"
-timeout 15s airodump-ng -w tempdump --output-format csv --write-interval 3 $IFACE
+airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & sleep 5 && killall airodump-ng
 
 echo "Preparing data"
 mv tempdump-01.csv tempdump.csv
