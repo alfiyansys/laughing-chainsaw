@@ -3,7 +3,7 @@ source ./config.cfg
 
 if [ -z "$FILTER_BSSID" ]
 then
-    airodump-ng $MOND
+    airodump-ng $IFACE
 else
-    airodump-ng $MOND --bssid $FILTER_BSSID
+    airodump-ng $IFACE --bssid $FILTER_BSSID
 fi

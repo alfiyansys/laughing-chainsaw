@@ -6,15 +6,14 @@ echo "Stopping monitor mode on $DEVICE"
 #airmon-ng stop $MON
 
 echo "Switch wireless device $DEVICE to managed mode"
-ifconfig $IFACE down
+ip link set $IFACE down
 iwconfig $IFACE mode managed
 
-echo "Deleting monitor $MONA & $MOND device"
-iw $MONA del
-iw $MOND del
+echo "Set device $IFACE to station mode"
+iw dev $IFACE set type station
 
 echo "Initiating device $IFACE to stand by"
-ifconfig $IFACE up
+ip link set $IFACE up
 
 echo "Enabling wireless device $DEVICE for managed by NetworkManager"
 nmcli dev set $IFACE managed yes

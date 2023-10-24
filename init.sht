@@ -7,17 +7,16 @@ echo "Temporary disabling wireless device $IFACE managed by NetworkManager"
 nmcli dev set $IFACE managed no
 
 echo "Switch off wireless device $IFACE to prepare monitoring mode"
-ifconfig $IFACE down
+ip link set $IFACE down
 
-# Use virtual monitor mode
-echo "Creating virtual station $MONA and monitor $MOND from $IFACE"
-iw dev $IFACE interface add $MONA type station
-iw dev $IFACE interface add $MOND type monitor
+# Switch to monitor mode, see issue #1
+echo "Switching $IFACE to monitor mode"
+iw dev $IFACE set type monitor
 
 echo "Set RFKill"
 rfkill unblock all
 
-echo "Initiating device $IFACE and derivatives to stand by"
-ifconfig $IFACE up
+#echo "Initiating device $IFACE and derivatives to stand by"
+#ip link set $IFACE up
 
-echo "Started station mode on $MONA and monitor mode on $MOND"
+echo "Started monitor mode on $IFACE"
