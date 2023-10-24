@@ -1,5 +1,5 @@
 # laughing-chainsaw
-Aircrack-ng wrapper, wifi jammer scripted tool for ubuntu
+Aircrack-ng wrapper, wifi deauther scripted tool for ubuntu
 
 Punya tetangga mengganggu? Berisik dan mabar sampai malam? 
 

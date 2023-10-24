@@ -3,7 +3,7 @@ IFACE="wlx0022cff5f309"
 MONA="mon-atk"
 MOND="mon-dmp"
 
-DEVICE=$MON
+ATKDEV=$MONA
 
 TARGET_DEVICE=""
 
