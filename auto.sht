@@ -20,8 +20,10 @@ if [ -z "$TARGET_CHANNEL" ]; then
 fi
 
 TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+TARGET_ESSID=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $14}')
 
 echo "Automated channel targeting..."
+echo "Target ESSID = $TARGET_ESSID"
 echo "Target BSSID = $TARGET_BSSID"
 echo "Target channel = $TARGET_CHANNEL"
 echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
