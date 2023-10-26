@@ -41,4 +41,5 @@ else
 	kill "$pid"
 fi
 
+echo ""
 echo "deAuth frame injection finished"
