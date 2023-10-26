@@ -4,6 +4,8 @@ source ./config.cfg
 SCAN_TIME=$AUTO_SCAN_TIME
 INJECTION_TIME=$AUTO_INJECTION_TIME
 
+exec > >(tee -a "$CHAINSAW_LOG") 2>&1
+
 echo "Sampling wireless data"
 rm tempdump*
 airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & pid=$!
