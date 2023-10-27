@@ -17,6 +17,6 @@ echo "Set RFKill"
 rfkill unblock all
 
 #echo "Initiating device $IFACE and derivatives to stand by"
-#ip link set $IFACE up
+ip link set $IFACE up
 
 echo "Started monitor mode on $IFACE"
