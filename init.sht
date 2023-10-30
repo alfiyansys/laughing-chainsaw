@@ -16,7 +16,10 @@ iw dev $IFACE set type monitor
 echo "Set RFKill"
 rfkill unblock all
 
+# enable promiscious mode
+ip link set $IFACE promisc on
+
 #echo "Initiating device $IFACE and derivatives to stand by"
-#ip link set $IFACE up
+ip link set $IFACE up
 
 echo "Started monitor mode on $IFACE"
