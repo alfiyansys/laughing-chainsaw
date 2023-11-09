@@ -27,6 +27,8 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 	exit 1
 fi
 
+# ======== MULTI SSID MODE RESEARCH SEPARATOR ========
+
 function sample(){
 	IFACE=$1
 	SCAN_TIME=$2
@@ -41,13 +43,23 @@ function sample(){
 	mv tempdump-01.csv tempdump.csv
 }
 
-sample $IFACE $SCAN_TIME $TARGET_BSSID
+function parse(){
+	TARGET_BSSID=$1
 
-exit 1
+	TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
+
+	echo $TARGET_CHANNEL
+}
+
+# main start
+# sample wireless data
+sample $IFACE $SCAN_TIME $TARGET_BSSID
 
 # processing the datas
 echo "Parsing data"
-TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
+TARGET_CHANNEL=$(parse $TARGET_BSSID)
+
+echo "TARGET CHANNEL: $TARGET_CHANNEL"
 
 # if target channel can't be found, just exit the script
 if [ -z "$TARGET_CHANNEL" ]; then
@@ -65,6 +77,9 @@ echo "Target ESSID = $TARGET_ESSID"
 echo "Target BSSID = $TARGET_BSSID"
 echo "Target channel = $TARGET_CHANNEL"
 echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
+
+# for debugging
+exit 1
 
 # set the channel of monitor interface
 iwconfig $IFACE channel $TARGET_CHANNEL
