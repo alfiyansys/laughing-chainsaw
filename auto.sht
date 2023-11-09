@@ -27,6 +27,23 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 	exit 1
 fi
 
+function sample(){
+	IFACE=$1
+	SCAN_TIME=$2
+	TARGET_BSSID=$3
+
+	echo $IFACE
+	echo $SCAN_TIME
+	echo $TARGET_BSSID
+
+	return 1
+}
+
+TARGET_CHANNEL=$(sample $IFACE $SCAN_TIME $TARGET_BSSID)
+
+echo $TARGET_CHANNEL
+exit 1
+
 # preliminary analysis of wireless network
 echo "Sampling wireless data"
 rm tempdump*
