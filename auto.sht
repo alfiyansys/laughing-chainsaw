@@ -32,28 +32,21 @@ function sample(){
 	SCAN_TIME=$2
 	TARGET_BSSID=$3
 
-	echo $IFACE
-	echo $SCAN_TIME
-	echo $TARGET_BSSID
-
-	return 1
+	# preliminary analysis of wireless network
+	echo "Sampling wireless data"
+	rm tempdump*
+	airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & pid=$!
+	sleep $SCAN_TIME
+	kill "$pid"
+	mv tempdump-01.csv tempdump.csv
 }
 
-TARGET_CHANNEL=$(sample $IFACE $SCAN_TIME $TARGET_BSSID)
+sample $IFACE $SCAN_TIME $TARGET_BSSID
 
-echo $TARGET_CHANNEL
 exit 1
 
-# preliminary analysis of wireless network
-echo "Sampling wireless data"
-rm tempdump*
-airodump-ng -w tempdump --output-format csv --write-interval 3 --background 1 $IFACE & pid=$!
-sleep $SCAN_TIME
-kill "$pid"
-
 # processing the datas
-echo "Preparing data"
-mv tempdump-01.csv tempdump.csv
+echo "Parsing data"
 TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
 
 # if target channel can't be found, just exit the script
