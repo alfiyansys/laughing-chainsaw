@@ -45,21 +45,21 @@ function sample(){
 
 function parse(){
 	TARGET_BSSID=$1
+	COLUMN=$2
 
-	TARGET_CHANNEL=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $4}')
+	TARGET_X=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, -v col="$COLUMN" '{sub(/^ *| *$/,"",$4); print $col}')
 
-	echo $TARGET_CHANNEL
+	echo $TARGET_X
 }
 
 # main start
 # sample wireless data
 sample $IFACE $SCAN_TIME $TARGET_BSSID
 
-# processing the datas
+# processing the datas, TARGET_BSSID at column 4
 echo "Parsing data"
-TARGET_CHANNEL=$(parse $TARGET_BSSID)
 
-echo "TARGET CHANNEL: $TARGET_CHANNEL"
+TARGET_CHANNEL=$(parse $TARGET_BSSID 4)
 
 # if target channel can't be found, just exit the script
 if [ -z "$TARGET_CHANNEL" ]; then
@@ -69,8 +69,9 @@ fi
 
 # filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
 TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+
 # determine ESSID for informational purpose only
-TARGET_ESSID=$(grep "$TARGET_BSSID" tempdump.csv | awk -F, '{sub(/^ *| *$/,"",$4); print $14}')
+TARGET_ESSID=$(parse $TARGET_BSSID 14)
 
 echo "Automated channel targeting..."
 echo "Target ESSID = $TARGET_ESSID"
