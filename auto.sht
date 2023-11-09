@@ -4,6 +4,8 @@
 source ./config.cfg
 SCAN_TIME=$AUTO_SCAN_TIME
 INJECTION_TIME=$AUTO_INJECTION_TIME
+MULTI_BSSID=$AUTO_MULTI_BSSID
+MULTI_LOOP_COUNT=$AUTO_MULTI_LOOP_COUNT
 
 # pipe output to stdout and designated log file
 exec > >(tee -a "$CHAINSAW_LOG") 2>&1
@@ -111,14 +113,16 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 		fi
 	done < "config.cfg"
 
-	for CURRENT_TARGET_BSSID in "${MULTI_TARGET_BSSID[@]}"; do
-		echo ""
-		echo "------------------------- TARGETING -------------------------"
-		CURRENT_TARGET_BSSID="${CURRENT_TARGET_BSSID//\"/}"  # Remove double quotes
-		echo "Current target BSSID = $CURRENT_TARGET_BSSID"
-		main $IFACE $CURRENT_TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
-		echo "------------------------- END -------------------------"
-		echo ""
+    for ((i = 1; i <= $MULTI_LOOP_COUNT; i++)); do
+		for CURRENT_TARGET_BSSID in "${MULTI_TARGET_BSSID[@]}"; do
+			echo ""
+			echo "------------------------- TARGETING -------------------------"
+			CURRENT_TARGET_BSSID="${CURRENT_TARGET_BSSID//\"/}"  # Remove double quotes
+			echo "Current target BSSID = $CURRENT_TARGET_BSSID"
+			main $IFACE $CURRENT_TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
+			echo "------------------------- END -------------------------"
+			echo ""
+		done
 	done
 else
 	echo "Normal mode"
