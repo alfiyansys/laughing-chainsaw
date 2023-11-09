@@ -114,10 +114,6 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 	exit 1
 else
 	echo "Normal mode"
+	main $IFACE $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
 fi
-
-main $IFACE $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
-
-# debug
-exit 1
 
