@@ -121,7 +121,8 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 		echo ""
 	done
 else
-	echo "Normal mode"echo ""
+	echo "Normal mode"
+	echo ""
 	echo "------------------------- TARGETING -------------------------"
 	main $IFACE $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
 	echo "------------------------- END -------------------------"
