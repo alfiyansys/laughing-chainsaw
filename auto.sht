@@ -108,6 +108,7 @@ if [ "$MULTI_BSSID" -eq 1 ]; then
 	done < "config.cfg"
 
 	for CURRENT_TARGET_BSSID in "${MULTI_TARGET_BSSID[@]}"; do
+		CURRENT_TARGET_BSSID="${CURRENT_TARGET_BSSID//\"/}"  # Remove double quotes
 		echo "Current target BSSID = $CURRENT_TARGET_BSSID"
 		main $IFACE $CURRENT_TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
 	done
