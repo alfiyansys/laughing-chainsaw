@@ -8,31 +8,9 @@ INJECTION_TIME=$AUTO_INJECTION_TIME
 # pipe output to stdout and designated log file
 exec > >(tee -a "$CHAINSAW_LOG") 2>&1
 
-if [ "$MULTI_BSSID" -eq 1 ]; then
-	echo "Multi BSSID mode enabled"
-	MULTI_TARGET_BSSID=()
-	while IFS= read -r line; do
-		# Check if the line is not commented (does not start with #) and contains "TARGET_BSSID"
-		if [[ ! $line =~ ^\# && $line =~ "TARGET_BSSID" ]]; then
-			# Extract the value of TARGET_BSSID
-			TARGET_BSSID=${line#*=}
-			# Add the value to the array
-			MULTI_TARGET_BSSID+=("$TARGET_BSSID")
-		fi
-	done < "config.cfg"
-
-	for value in "${MULTI_TARGET_BSSID[@]}"; do
-		echo "TARGET_BSSID: $value"
-	done
-	exit 1
-fi
-
-# ======== MULTI SSID MODE RESEARCH SEPARATOR ========
-
 function sample(){
 	IFACE=$1
 	SCAN_TIME=$2
-	TARGET_BSSID=$3
 
 	# preliminary analysis of wireless network
 	echo "Sampling wireless data"
@@ -80,8 +58,31 @@ function exec_deauth(){
 }
 
 # main start
+
 # sample wireless data
-sample $IFACE $SCAN_TIME $TARGET_BSSID
+sample $IFACE $SCAN_TIME
+
+# determine if multi bssid mode is enabled
+if [ "$MULTI_BSSID" -eq 1 ]; then
+	echo "Multi BSSID mode enabled"
+	MULTI_TARGET_BSSID=()
+	while IFS= read -r line; do
+		# Check if the line is not commented (does not start with #) and contains "TARGET_BSSID"
+		if [[ ! $line =~ ^\# && $line =~ "TARGET_BSSID" ]]; then
+			# Extract the value of TARGET_BSSID
+			TARGET_BSSID=${line#*=}
+			# Add the value to the array
+			MULTI_TARGET_BSSID+=("$TARGET_BSSID")
+		fi
+	done < "config.cfg"
+
+	for value in "${MULTI_TARGET_BSSID[@]}"; do
+		echo "TARGET_BSSID: $value"
+	done
+	exit 1
+else
+	echo "Normal mode"
+fi
 
 # processing the datas, TARGET_BSSID at column 4
 echo "Parsing data"
