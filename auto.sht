@@ -8,7 +8,7 @@ INJECTION_TIME=$AUTO_INJECTION_TIME
 # pipe output to stdout and designated log file
 exec > >(tee -a "$CHAINSAW_LOG") 2>&1
 
-if [ "$MULTI_BSSID" -eq 1]; then
+if [ "$MULTI_BSSID" -eq 1 ]; then
 	echo "Multi BSSID mode enabled"
 	MULTI_TARGET_BSSID=()
 	while IFS= read -r line; do
